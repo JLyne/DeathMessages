@@ -14,7 +14,6 @@ import net.joshb.deathmessages.listener.customlisteners.BlockExplosion;
 import net.joshb.deathmessages.listener.customlisteners.BroadcastEntityDeathListener;
 import net.joshb.deathmessages.listener.customlisteners.BroadcastPlayerDeathListener;
 import net.joshb.deathmessages.listener.mythicmobs.MobDeath;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -61,8 +60,6 @@ public class DeathMessages extends JavaPlugin {
         initializeHooks();
         initializeOnlinePlayers();
         checkGameRules();
-        new Metrics(this, 12365);
-        getLogger().log(Level.INFO, "bStats Hook Enabled!");
     }
 
     public void onLoad() {
