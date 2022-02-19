@@ -10,11 +10,6 @@ Add-Prefix-To-All-Messages: true
 
 #Settings for specific hooks the plugins interact with
 Hooks:
-  # If MythicMobs is found, enable the hook
-  # Enable/Disable MythicMobs hook
-  MythicMobs:
-    Enabled: true
-
   # If WorldGuard is found, enable the hook
   # This creates custom flags for regions. These flags are set to ALLOW by default
   # Flags:
@@ -26,37 +21,6 @@ Hooks:
   # The above flags determine death message from being broadcasted if the pvp/pve is taking place in the region.
   WorldGuard:
     Enabled: true
-
-  # If DiscordBotAPI (https://www.spigotmc.org/resources/discordbotapi.86518/) or DiscordSRV
-  # (https://www.spigotmc.org/resources/discordsrv.18494/)is installed, and enabled here.
-  # To get the Guild ID and Channel-IDs, you must have developer mode enabled in discord. Then, you will right click the
-  # guild and click on "Copy ID". Then, you will right click the channel you want to send the messages to and again, click
-  # "Copy ID". The format for the list of Channels is: "guild_ID:channel_ID"
-  # Example: "218258614192450048:827286062147837621"
-  # THE ABOVE EXAMPLE SHOULD NOT BE USED IN LIVE APPLICATIONS! DO NOT ATTEMPT TO USE IT.
-  Discord:
-    Enabled: false
-    # Specify which channel certain death messages get sent.
-    Channels:
-      Player:
-        Enabled: true
-        Channels:
-          - "218258614192450048:827286062147837621"
-      Mob:
-        Enabled: true
-        Channels: []
-      Natural:
-        Enabled: true
-        Channels: []
-      Entity:
-        Enabled: true
-        Channels: []
-    # If you wish to only have certain worlds with death message broadcast to discord, define them here
-    World-Whitelist:
-      Enabled: false
-      Worlds:
-        - test1
-        - test2
 
   # If you run a bungee server that you would like to send death messages to other servers, enable this
   Bungee:
@@ -151,8 +115,6 @@ Disabled-Worlds:
 
 Private-Messages:
   # All messages will still be sent to the console log no matter the setting.
-  # Discord messages will be effected depending on if the below settings are changed.
-  # Example: Setting Player to true will not send the message to discord.
   # The victim and the killer will only have the death message sent to them.
   Player: false
   # The victim will only have the death message sent to them.

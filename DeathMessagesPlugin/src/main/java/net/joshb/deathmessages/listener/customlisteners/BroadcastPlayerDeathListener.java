@@ -22,8 +22,6 @@ import java.util.regex.Matcher;
 
 public class BroadcastPlayerDeathListener implements Listener {
 
-    private boolean discordSent = false;
-
     @EventHandler
     public void broadcastListener(BroadcastDeathMessageEvent e) {
 
@@ -44,9 +42,6 @@ public class BroadcastPlayerDeathListener implements Listener {
             boolean privatePlayer = Settings.getInstance().getConfig().getBoolean("Private-Messages.Player");
             boolean privateMobs = Settings.getInstance().getConfig().getBoolean("Private-Messages.Mobs");
             boolean privateNatural = Settings.getInstance().getConfig().getBoolean("Private-Messages.Natural");
-
-            //To reset for each death message
-            discordSent = false;
 
             for (World w : e.getBroadcastedWorlds()) {
                 if(Settings.getInstance().getConfig().getStringList("Disabled-Worlds").contains(w.getName())){
@@ -93,28 +88,6 @@ public class BroadcastPlayerDeathListener implements Listener {
         try {
             if (pms.getMessagesEnabled()) {
                 pls.spigot().sendMessage(e.getTextComponent());
-            }
-            if(Settings.getInstance().getConfig().getBoolean("Hooks.Discord.World-Whitelist.Enabled")) {
-                List<String> discordWorldWhitelist = Settings.getInstance().getConfig().getStringList("Hooks.Discord.World-Whitelist.Worlds");
-                boolean broadcastToDiscord = false;
-                for(World world : worlds){
-                    if(discordWorldWhitelist.contains(world.getName())){
-                        broadcastToDiscord = true;
-                    }
-                }
-                if(!broadcastToDiscord){
-                    //Wont reach the discord broadcast
-                    return;
-                }
-                //Will reach the discord broadcast
-            }
-            if (DeathMessages.discordBotAPIExtension != null && !discordSent) {
-                DeathMessages.discordBotAPIExtension.sendDiscordMessage(PlayerManager.getPlayer(e.getPlayer()), e.getMessageType(), ChatColor.stripColor(e.getTextComponent().toLegacyText()));
-                discordSent = true;
-            }
-            if (DeathMessages.discordSRVExtension != null && !discordSent) {
-                DeathMessages.discordSRVExtension.sendDiscordMessage(PlayerManager.getPlayer(e.getPlayer()), e.getMessageType(), ChatColor.stripColor(e.getTextComponent().toLegacyText()));
-                discordSent = true;
             }
         } catch (NullPointerException e1){
             e1.printStackTrace();

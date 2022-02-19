@@ -10,7 +10,6 @@ import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.Gangs;
 import net.joshb.deathmessages.config.Settings;
 import net.joshb.deathmessages.enums.MessageType;
-import net.joshb.deathmessages.enums.MobType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -121,12 +120,7 @@ public class EntityDeath implements Listener {
             }
         } else {
             //Player killing mob
-            MobType mobType = MobType.VANILLA;
-            if(DeathMessages.plugin.mythicmobsEnabled) {
-                if(DeathMessages.plugin.mythicMobs.getAPIHelper().isMythicMob(e.getEntity().getUniqueId())){
-                    mobType = MobType.MYTHIC_MOB;
-                }
-            }
+
             if(EntityManager.getEntity(e.getEntity().getUniqueId()) == null) return;
             EntityManager em = EntityManager.getEntity(e.getEntity().getUniqueId());
 

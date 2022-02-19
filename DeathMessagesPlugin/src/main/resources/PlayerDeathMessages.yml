@@ -1286,9 +1286,6 @@ Mobs:
         - "%player% withered away from %killer%'s magic"
       Thorns:
         - "%player% tried playing with %killer%'s armor with thorns"
-      # Hook related deaths
-      CombatLogX-Kill:
-        - '%player% logged out during combat fighting %killer%, they died still -.-'
     Gang:
       Projectile-Arrow:
         - "%player% was ganged up on by some %killer%! One shot them with %weapon%"
@@ -1304,9 +1301,4 @@ Mobs:
       Melee:
         - "%player% was knocked by a bunch of %killer%'s"
 
-Custom-Mobs:
-  Mythic-Mobs:
-    SkeletalMinion:
-      Solo:
-        Projectile-Arrow:
-          - "%player% was shot by %killer%"
+Custom-Mobs: {}

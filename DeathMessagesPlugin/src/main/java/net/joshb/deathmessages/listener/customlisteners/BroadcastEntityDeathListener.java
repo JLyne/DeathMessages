@@ -43,8 +43,6 @@ public class BroadcastEntityDeathListener implements Listener {
                 pm.setCooldown();
             }
 
-            boolean discordSent = false;
-
             boolean privateTameable = Settings.getInstance().getConfig().getBoolean("Private-Messages.Entity");
 
             for(World w : e.getBroadcastedWorlds()){
@@ -66,28 +64,6 @@ public class BroadcastEntityDeathListener implements Listener {
                             }
                             pls.spigot().sendMessage(e.getTextComponent());
                             PluginMessaging.sendPluginMSG(pms.getPlayer(), e.getTextComponent().toString());
-                        }
-                        if(Settings.getInstance().getConfig().getBoolean("Hooks.Discord.World-Whitelist.Enabled")) {
-                            List<String> discordWorldWhitelist = Settings.getInstance().getConfig().getStringList("Hooks.Discord.World-Whitelist.Worlds");
-                            boolean broadcastToDiscord = false;
-                            for(World world : e.getBroadcastedWorlds()){
-                                if(discordWorldWhitelist.contains(world.getName())){
-                                    broadcastToDiscord = true;
-                                }
-                            }
-                            if(!broadcastToDiscord){
-                                //Wont reach the discord broadcast
-                                return;
-                            }
-                            //Will reach the discord broadcast
-                        }
-                        if(DeathMessages.discordBotAPIExtension != null && !discordSent){
-                            DeathMessages.discordBotAPIExtension.sendEntityDiscordMessage(ChatColor.stripColor(e.getTextComponent().toLegacyText()), pm, e.getEntity(), hasOwner, e.getMessageType());
-                            discordSent = true;
-                        }
-                        if(DeathMessages.discordSRVExtension != null && !discordSent){
-                            DeathMessages.discordSRVExtension.sendEntityDiscordMessage(ChatColor.stripColor(e.getTextComponent().toLegacyText()), pm, e.getEntity(), hasOwner, e.getMessageType());
-                            discordSent = true;
                         }
                     }
                 }

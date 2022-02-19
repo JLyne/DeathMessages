@@ -19,7 +19,6 @@ public class CommandManager implements CommandExecutor {
     public void initializeSubCommands(){
         commands.add(new CommandBackup());
         commands.add(new CommandBlacklist());
-        commands.add(new CommandDiscordLog());
         commands.add(new CommandEdit());
         commands.add(new CommandReload());
         commands.add(new CommandRestore());

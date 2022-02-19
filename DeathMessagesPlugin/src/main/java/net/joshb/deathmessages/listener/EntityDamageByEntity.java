@@ -1,10 +1,8 @@
 package net.joshb.deathmessages.listener;
 
-import net.joshb.deathmessages.DeathMessages;
 import net.joshb.deathmessages.api.EntityManager;
 import net.joshb.deathmessages.api.PlayerManager;
 import net.joshb.deathmessages.config.EntityDeathMessages;
-import net.joshb.deathmessages.enums.MobType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -69,23 +67,12 @@ public class EntityDamageByEntity implements Listener {
             if(EntityDeathMessages.getInstance().getConfig().getConfigurationSection("Entities") == null) return;
             Set<String> listenedMobs = EntityDeathMessages.getInstance().getConfig().getConfigurationSection("Entities")
                     .getKeys(false);
-            if(EntityDeathMessages.getInstance().getConfig().getConfigurationSection("Mythic-Mobs-Entities") != null
-                    && DeathMessages.plugin.mythicmobsEnabled){
-                listenedMobs.addAll(EntityDeathMessages.getInstance().getConfig().getConfigurationSection("Mythic-Mobs-Entities")
-                        .getKeys(false));
-            }
             if(listenedMobs.isEmpty()) return;
             for (String listened : listenedMobs) {
-                if(listened.contains(e.getEntity().getType().getEntityClass().getSimpleName().toLowerCase())
-                        || (DeathMessages.plugin.mythicmobsEnabled && DeathMessages.plugin.mythicMobs.getAPIHelper().isMythicMob(e.getEntity().getUniqueId()))) {
+                if(listened.contains(e.getEntity().getType().getEntityClass().getSimpleName().toLowerCase())) {
                     EntityManager em;
                     if (EntityManager.getEntity(e.getEntity().getUniqueId()) == null) {
-                        MobType mobType = MobType.VANILLA;
-                        if(DeathMessages.plugin.mythicmobsEnabled
-                                && DeathMessages.plugin.mythicMobs.getAPIHelper().isMythicMob(e.getEntity().getUniqueId())){
-                            mobType = MobType.MYTHIC_MOB;
-                        }
-                        em = new EntityManager(e.getEntity(), e.getEntity().getUniqueId(), mobType);
+                        em = new EntityManager(e.getEntity(), e.getEntity().getUniqueId());
                     } else {
                         em = EntityManager.getEntity(e.getEntity().getUniqueId());
                     }
