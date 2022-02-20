@@ -1,7 +1,7 @@
 package net.joshb.deathmessages.api.events;
 
 import net.joshb.deathmessages.enums.MessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,14 +17,14 @@ public class BroadcastDeathMessageEvent extends Event implements Cancellable {
     private final Player player;
     private final LivingEntity livingEntity;
     private final MessageType messageType;
-    private final TextComponent textComponent;
+    private final Component textComponent;
     private final boolean isGangDeath;
     private final List<World> broadcastedWorlds;
     private boolean isCancelled;
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public BroadcastDeathMessageEvent(Player player, LivingEntity livingEntity, MessageType messageType, TextComponent textComponent,
+    public BroadcastDeathMessageEvent(Player player, LivingEntity livingEntity, MessageType messageType, Component textComponent,
                                       List<World> broadcastedWorlds, boolean isGangDeath) {
         this.player = player;
         this.livingEntity = livingEntity;
@@ -64,7 +64,7 @@ public class BroadcastDeathMessageEvent extends Event implements Cancellable {
 
     public MessageType getMessageType(){ return this.messageType; }
 
-    public TextComponent getTextComponent() {
+    public Component getTextComponent() {
         return this.textComponent;
     }
 

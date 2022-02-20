@@ -2,7 +2,7 @@ package net.joshb.deathmessages.api.events;
 
 import net.joshb.deathmessages.api.PlayerManager;
 import net.joshb.deathmessages.enums.MessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
@@ -19,13 +19,13 @@ public class BroadcastEntityDeathMessageEvent extends Event implements Cancellab
     //The entity that was killed by a player
     private final Entity entity;
     private final MessageType messageType;
-    private final TextComponent textComponent;
+    private final Component textComponent;
     private final List<World> broadcastedWorlds;
     private boolean isCancelled;
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public BroadcastEntityDeathMessageEvent(PlayerManager pm, Entity entity, MessageType messageType, TextComponent textComponent,
+    public BroadcastEntityDeathMessageEvent(PlayerManager pm, Entity entity, MessageType messageType, Component textComponent,
                                             List<World> broadcastedWorlds) {
         this.player = pm;
         this.entity = entity;
@@ -62,7 +62,7 @@ public class BroadcastEntityDeathMessageEvent extends Event implements Cancellab
 
     public MessageType getMessageType(){ return this.messageType; }
 
-    public TextComponent getTextComponent() {
+    public Component getTextComponent() {
         return this.textComponent;
     }
 

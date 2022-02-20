@@ -3,6 +3,7 @@ package net.joshb.deathmessages.command.deathmessages;
 import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.ConfigManager;
 import net.joshb.deathmessages.enums.Permission;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.command.CommandSender;
 
 public class CommandBackup extends DeathMessagesCommand {
@@ -25,7 +26,7 @@ public class CommandBackup extends DeathMessagesCommand {
             boolean b = Boolean.parseBoolean(args[0]);
             String code = ConfigManager.getInstance().backup(b);
             sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Backup.Backed-Up")
-                    .replaceAll("%backup-code%", code));
+                    .replaceText(TextReplacementConfig.builder().matchLiteral("%backup-code%").replacement(code).build()));
         }
     }
 }

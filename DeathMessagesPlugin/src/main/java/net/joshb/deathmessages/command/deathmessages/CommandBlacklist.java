@@ -4,6 +4,7 @@ import net.joshb.deathmessages.api.PlayerManager;
 import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.UserData;
 import net.joshb.deathmessages.enums.Permission;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -41,7 +42,7 @@ public class CommandBlacklist extends DeathMessagesCommand {
                         UserData.getInstance().getConfig().set(entry.getKey() + ".is-blacklisted", false);
                         UserData.getInstance().save();
                         sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Blacklist.Blacklist-Remove")
-                                .replaceAll("%player%", args[0]));
+                                .replaceText(TextReplacementConfig.builder().matchLiteral("%player%").replacement(args[0]).build()));
                     } else {
                         if(Bukkit.getPlayer(UUID.fromString(entry.getKey())) != null){
                             PlayerManager pm = PlayerManager.getPlayer(UUID.fromString(entry.getKey()));
@@ -52,13 +53,13 @@ public class CommandBlacklist extends DeathMessagesCommand {
                         UserData.getInstance().getConfig().set(entry.getKey() + ".is-blacklisted", true);
                         UserData.getInstance().save();
                         sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Blacklist.Blacklist-Add")
-                                .replaceAll("%player%", args[0]));
+                                .replaceText(TextReplacementConfig.builder().matchLiteral("%player%").replacement(args[0]).build()));
                     }
                     return;
                 }
             }
             sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Blacklist.Username-None-Existent")
-                    .replaceAll("%player%", args[0]));
+                    .replaceText(TextReplacementConfig.builder().matchLiteral("%player%").replacement(args[0]).build()));
         }
 
     }

@@ -4,6 +4,7 @@ import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.EntityDeathMessages;
 import net.joshb.deathmessages.config.PlayerDeathMessages;
 import net.joshb.deathmessages.enums.Permission;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
@@ -70,7 +71,8 @@ public class CommandEdit extends DeathMessagesCommand {
                             sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Invalid-Selection"));
                             return;
                         }
-                        sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceAll("%message%", list.get(placeholder)));
+                        sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceText(
+                                TextReplacementConfig.builder().matchLiteral("%message%").replacement(list.get(placeholder)).build()));
                         list.remove(placeholder);
                         PlayerDeathMessages.getInstance().getConfig().set("Mobs." + mobName + ".Solo." + damageType, list);
                         PlayerDeathMessages.getInstance().save();
@@ -81,7 +83,8 @@ public class CommandEdit extends DeathMessagesCommand {
                             sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Invalid-Selection"));
                             return;
                         }
-                        sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceAll("%message%", list.get(placeholder)));
+                        sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceText(
+                                TextReplacementConfig.builder().matchLiteral("%message%").replacement(list.get(placeholder)).build()));
                         list.remove(placeholder);
                         PlayerDeathMessages.getInstance().getConfig().set("Mobs." + mobName + ".Gang." + damageType, list);
                         PlayerDeathMessages.getInstance().save();
@@ -145,7 +148,8 @@ public class CommandEdit extends DeathMessagesCommand {
                         sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Invalid-Selection"));
                         return;
                     }
-                    sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceAll("%message%", list.get(placeholder)));
+                    sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Removed-Message").replaceText(
+                            TextReplacementConfig.builder().matchLiteral("%message%").replacement(list.get(placeholder)).build()));
                     list.remove(placeholder);
                     EntityDeathMessages.getInstance().getConfig().set("Entities." + mobName + "." + damageType, list);
                     EntityDeathMessages.getInstance().save();

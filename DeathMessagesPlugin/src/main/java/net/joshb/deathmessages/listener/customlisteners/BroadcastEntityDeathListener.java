@@ -9,16 +9,13 @@ import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.Messages;
 import net.joshb.deathmessages.config.Settings;
 import net.joshb.deathmessages.listener.PluginMessaging;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
 import java.util.regex.Matcher;
 
 public class BroadcastEntityDeathListener implements Listener {
@@ -34,7 +31,7 @@ public class BroadcastEntityDeathListener implements Listener {
         if (!e.isCancelled()) {
             if (Messages.getInstance().getConfig().getBoolean("Console.Enabled")) {
                 String message = Assets.entityDeathPlaceholders(Messages.getInstance().getConfig().getString("Console.Message"), pm.getPlayer(), e.getEntity(), hasOwner);
-                message = message.replaceAll("%message%", Matcher.quoteReplacement(e.getTextComponent().toLegacyText()));
+                message = message.replaceAll("%message%", Matcher.quoteReplacement(Assets.legacySerializer.serialize(e.getTextComponent())));
                 Bukkit.getConsoleSender().sendMessage(message);
             }
             if(pm.isInCooldown()){
@@ -53,7 +50,7 @@ public class BroadcastEntityDeathListener implements Listener {
                     PlayerManager pms = PlayerManager.getPlayer(pls);
                     if(privateTameable && pms.getUUID().equals(pm.getPlayer().getUniqueId())){
                         if (pms.getMessagesEnabled()) {
-                            pls.spigot().sendMessage(e.getTextComponent());
+                            pls.sendMessage(e.getTextComponent());
                         }
                     } else {
                         if (pms.getMessagesEnabled()) {
@@ -62,13 +59,13 @@ public class BroadcastEntityDeathListener implements Listener {
                                     return;
                                 }
                             }
-                            pls.spigot().sendMessage(e.getTextComponent());
+                            pls.sendMessage(e.getTextComponent());
                             PluginMessaging.sendPluginMSG(pms.getPlayer(), e.getTextComponent().toString());
                         }
                     }
                 }
             }
-            PluginMessaging.sendPluginMSG(e.getPlayer().getPlayer(), ComponentSerializer.toString(e.getTextComponent()));
+            PluginMessaging.sendPluginMSG(e.getPlayer().getPlayer(), Assets.legacySerializer.serialize(e.getTextComponent()));
         }
         EntityManager.getEntity(e.getEntity().getUniqueId()).destroy();
     }

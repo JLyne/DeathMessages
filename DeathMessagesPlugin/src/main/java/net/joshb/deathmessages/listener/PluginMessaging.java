@@ -7,8 +7,7 @@ import net.joshb.deathmessages.api.PlayerManager;
 import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.Messages;
 import net.joshb.deathmessages.config.Settings;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -39,12 +38,12 @@ public class PluginMessaging implements PluginMessageListener {
                 String[] data = in.readUTF().split("######");
                 String serverName = data[0];
                 String rawMsg = data[1];
-                TextComponent prefix = new TextComponent(Assets.colorize(Messages.getInstance().getConfig().getString("Bungee.Message").replaceAll("%server_name%", serverName)));
-                TextComponent message = new TextComponent(ComponentSerializer.parse(rawMsg));
+                Component prefix = Assets.legacySerializer.deserialize(Messages.getInstance().getConfig().getString("Bungee.Message").replaceAll("%server_name%", serverName));
+                Component message = Assets.legacySerializer.deserialize(rawMsg);
                 for (Player pls : Bukkit.getOnlinePlayers()) {
                     PlayerManager pms = PlayerManager.getPlayer(pls);
                     if(pms.getMessagesEnabled()){
-                        pls.spigot().sendMessage(prefix, message);
+                        pls.sendMessage(prefix.append(message));
                     }
                 }
             }

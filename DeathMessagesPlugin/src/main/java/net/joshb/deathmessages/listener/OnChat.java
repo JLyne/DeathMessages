@@ -3,6 +3,7 @@ package net.joshb.deathmessages.listener;
 import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.EntityDeathMessages;
 import net.joshb.deathmessages.config.PlayerDeathMessages;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,10 +32,10 @@ public class OnChat implements Listener {
                 PlayerDeathMessages.getInstance().save();
                 PlayerDeathMessages.getInstance().reload();
                 p.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Added-Message")
-                        .replaceAll("%message%", e.getMessage())
-                        .replaceAll("%mob_name%", mobName)
-                        .replaceAll("%mode%", mode)
-                        .replaceAll("%damage_type%", damageType));
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%message%").replacement(e.getMessage()).build())
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%mob_name%").replacement(mobName).build())
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%mode%").replacement(mode).build())
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%damage_type%").replacement(damageType).build()));
             } else {
                 String mobName = spl[0];
                 String damageType = spl[1];
@@ -44,9 +45,9 @@ public class OnChat implements Listener {
                 EntityDeathMessages.getInstance().save();
                 EntityDeathMessages.getInstance().reload();
                 p.sendMessage(Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Edit.Added-Message")
-                        .replaceAll("%message%", e.getMessage())
-                        .replaceAll("%mob_name%", mobName)
-                        .replaceAll("%damage_type%", damageType));
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%message%").replacement(e.getMessage()).build())
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%mob_name%").replacement(mobName).build())
+                        .replaceText(TextReplacementConfig.builder().matchLiteral("%damage_type%").replacement(damageType).build()));
             }
         }
     }

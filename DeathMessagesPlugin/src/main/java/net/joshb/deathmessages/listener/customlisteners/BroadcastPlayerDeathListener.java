@@ -9,9 +9,7 @@ import net.joshb.deathmessages.config.Messages;
 import net.joshb.deathmessages.config.Settings;
 import net.joshb.deathmessages.enums.MessageType;
 import net.joshb.deathmessages.listener.PluginMessaging;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +26,7 @@ public class BroadcastPlayerDeathListener implements Listener {
         if (!e.isCancelled()) {
             if (Messages.getInstance().getConfig().getBoolean("Console.Enabled")) {
                 String message = Assets.playerDeathPlaceholders(Messages.getInstance().getConfig().getString("Console.Message"), PlayerManager.getPlayer(e.getPlayer()), e.getLivingEntity());
-                message = message.replaceAll("%message%", Matcher.quoteReplacement(e.getTextComponent().toLegacyText()));
+                message = message.replaceAll("%message%", Matcher.quoteReplacement(Assets.legacySerializer.serialize(e.getTextComponent())));
                 Bukkit.getConsoleSender().sendMessage(message);
             }
 
@@ -74,7 +72,7 @@ public class BroadcastPlayerDeathListener implements Listener {
                     }
                 }
             }
-            PluginMessaging.sendPluginMSG(e.getPlayer(), ComponentSerializer.toString(e.getTextComponent()));
+            PluginMessaging.sendPluginMSG(e.getPlayer(), Assets.legacySerializer.serialize(e.getTextComponent()));
         }
     }
 
@@ -87,7 +85,7 @@ public class BroadcastPlayerDeathListener implements Listener {
         }
         try {
             if (pms.getMessagesEnabled()) {
-                pls.spigot().sendMessage(e.getTextComponent());
+                pls.sendMessage(e.getTextComponent());
             }
         } catch (NullPointerException e1){
             e1.printStackTrace();

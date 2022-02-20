@@ -10,7 +10,7 @@ import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.config.Gangs;
 import net.joshb.deathmessages.config.Settings;
 import net.joshb.deathmessages.enums.MessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -44,44 +44,44 @@ public class EntityDeath implements Listener {
             if (!(pm.getLastEntityDamager() instanceof LivingEntity) || pm.getLastEntityDamager() == e.getEntity()) {
                 //Natural Death
                 if (pm.getLastExplosiveEntity() instanceof EnderCrystal) {
-                    TextComponent tx = Assets.getNaturalDeath(pm, "End-Crystal");
+                    Component tx = Assets.getNaturalDeath(pm, "End-Crystal");
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (pm.getLastExplosiveEntity() instanceof TNTPrimed) {
-                    TextComponent tx = Assets.getNaturalDeath(pm, "TNT");
+                    Component tx = Assets.getNaturalDeath(pm, "TNT");
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (pm.getLastExplosiveEntity() instanceof Firework) {
-                    TextComponent tx = Assets.getNaturalDeath(pm, "Firework");
+                    Component tx = Assets.getNaturalDeath(pm, "Firework");
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (pm.getLastClimbing() != null && pm.getLastDamage().equals(EntityDamageEvent.DamageCause.FALL)) {
-                    TextComponent tx = Assets.getNaturalDeath(pm, "Climbable");
+                    Component tx = Assets.getNaturalDeath(pm, "Climbable");
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (pm.getLastDamage().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)) {
                     ExplosionManager explosionManager = ExplosionManager.getManagerIfEffected(p.getUniqueId());
                     if(explosionManager == null) return;
-                    TextComponent tx = null;
+                    Component tx = null;
                     if(explosionManager.getMaterial().name().contains("BED")){
                         tx = Assets.getNaturalDeath(pm, "Bed");
                     }
-                    if(DeathMessages.majorVersion() >= 16 && explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)){
+                    if(explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)){
                         tx = Assets.getNaturalDeath(pm, "Respawn-Anchor");
                     }
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (pm.getLastDamage().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
-                    TextComponent tx = Assets.getNaturalDeath(pm, Assets.getSimpleProjectile(pm.getLastProjectileEntity()));
+                    Component tx = Assets.getNaturalDeath(pm, Assets.getSimpleProjectile(pm.getLastProjectileEntity()));
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
                 } else {
-                    TextComponent tx = Assets.getNaturalDeath(pm, Assets.getSimpleCause(pm.getLastDamage()));
+                    Component tx = Assets.getNaturalDeath(pm, Assets.getSimpleCause(pm.getLastDamage()));
                     if (tx == null) return;
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p, null, MessageType.NATURAL, tx, getWorlds(p), false);
                     Bukkit.getPluginManager().callEvent(event);
@@ -106,7 +106,7 @@ public class EntityDeath implements Listener {
                         gangKill = true;
                     }
                 }
-                TextComponent tx = Assets.playerDeathMessage(pm, gangKill);
+                Component tx = Assets.playerDeathMessage(pm, gangKill);
                 if (tx == null) return;
                 if (ent instanceof Player) {
                     BroadcastDeathMessageEvent event = new BroadcastDeathMessageEvent(p,
@@ -128,7 +128,7 @@ public class EntityDeath implements Listener {
 
             PlayerManager damager = em.getLastPlayerDamager();
 
-            TextComponent tx = Assets.entityDeathMessage(em, mobType);
+            Component tx = Assets.entityDeathMessage(em);
             if (tx == null) return;
             BroadcastEntityDeathMessageEvent event = new BroadcastEntityDeathMessageEvent(damager, e.getEntity(), MessageType.ENTITY, tx, getWorlds(e.getEntity()));
             Bukkit.getPluginManager().callEvent(event);

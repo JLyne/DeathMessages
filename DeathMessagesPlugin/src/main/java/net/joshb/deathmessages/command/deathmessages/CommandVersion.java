@@ -3,6 +3,8 @@ package net.joshb.deathmessages.command.deathmessages;
 import net.joshb.deathmessages.DeathMessages;
 import net.joshb.deathmessages.assets.Assets;
 import net.joshb.deathmessages.enums.Permission;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.command.CommandSender;
 
 public class CommandVersion extends DeathMessagesCommand {
@@ -19,8 +21,9 @@ public class CommandVersion extends DeathMessagesCommand {
             sender.sendMessage(Assets.formatMessage("Commands.DeathMessages.No-Permission"));
             return;
         }
-        String message = Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Version");
-        message = message.replaceAll("%version%", DeathMessages.plugin.getDescription().getVersion());
+        Component message = Assets.formatMessage("Commands.DeathMessages.Sub-Commands.Version");
+        message = message.replaceText(TextReplacementConfig.builder().matchLiteral("%version%").replacement(
+                DeathMessages.plugin.getDescription().getVersion()).build());
         sender.sendMessage(message);
     }
 }
