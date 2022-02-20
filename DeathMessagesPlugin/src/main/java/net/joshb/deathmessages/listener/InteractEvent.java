@@ -58,36 +58,34 @@ public class InteractEvent implements Listener {
                 Bukkit.getPluginManager().callEvent(explodeEvent);
             }
         } else if (!b.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
-            if (DeathMessages.majorVersion() >= 16) {
-                if (b.getType().equals(Material.RESPAWN_ANCHOR)) {
-                    RespawnAnchor anchor = (RespawnAnchor) b.getBlockData();
-                    
-                    if (!(anchor.getCharges() == anchor.getMaximumCharges()) && !e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GLOWSTONE)) return;
-                    List<UUID> effected = new ArrayList<>();
-                    for (Player p : e.getClickedBlock().getWorld().getPlayers()) {
-                        if (p.getLocation().distanceSquared(b.getLocation()) < 100) {
-                            PlayerManager effect = PlayerManager.getPlayer(p);
-                            effected.add(p.getUniqueId());
-                            effect.setLastEntityDamager(e.getPlayer());
-                        }
+            if (b.getType().equals(Material.RESPAWN_ANCHOR)) {
+                RespawnAnchor anchor = (RespawnAnchor) b.getBlockData();
+
+                if (!(anchor.getCharges() == anchor.getMaximumCharges()) && !e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GLOWSTONE)) return;
+                List<UUID> effected = new ArrayList<>();
+                for (Player p : e.getClickedBlock().getWorld().getPlayers()) {
+                    if (p.getLocation().distanceSquared(b.getLocation()) < 100) {
+                        PlayerManager effect = PlayerManager.getPlayer(p);
+                        effected.add(p.getUniqueId());
+                        effect.setLastEntityDamager(e.getPlayer());
                     }
-                    for (Entity ent : e.getClickedBlock().getWorld().getEntities()) {
-                        if(ent instanceof Player) continue;
-                        if (ent.getLocation().distanceSquared(b.getLocation()) < 100) {
-                            EntityManager em;
-                            if (EntityManager.getEntity(ent.getUniqueId()) == null) {
-                                em = new EntityManager(ent, ent.getUniqueId());
-                            } else {
-                                em = EntityManager.getEntity(ent.getUniqueId());
-                            }
-                            effected.add(ent.getUniqueId());
-                            em.setLastPlayerDamager(PlayerManager.getPlayer(e.getPlayer()));
-                        }
-                    }
-                    new ExplosionManager(e.getPlayer().getUniqueId(), b.getType(), b.getLocation(), effected);
-                    DMBlockExplodeEvent explodeEvent = new DMBlockExplodeEvent(e.getPlayer(), b);
-                    Bukkit.getPluginManager().callEvent(explodeEvent);
                 }
+                for (Entity ent : e.getClickedBlock().getWorld().getEntities()) {
+                    if(ent instanceof Player) continue;
+                    if (ent.getLocation().distanceSquared(b.getLocation()) < 100) {
+                        EntityManager em;
+                        if (EntityManager.getEntity(ent.getUniqueId()) == null) {
+                            em = new EntityManager(ent, ent.getUniqueId());
+                        } else {
+                            em = EntityManager.getEntity(ent.getUniqueId());
+                        }
+                        effected.add(ent.getUniqueId());
+                        em.setLastPlayerDamager(PlayerManager.getPlayer(e.getPlayer()));
+                    }
+                }
+                new ExplosionManager(e.getPlayer().getUniqueId(), b.getType(), b.getLocation(), effected);
+                DMBlockExplodeEvent explodeEvent = new DMBlockExplodeEvent(e.getPlayer(), b);
+                Bukkit.getPluginManager().callEvent(explodeEvent);
             }
         }
     }

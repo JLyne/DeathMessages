@@ -63,16 +63,6 @@ public class DeathMessages extends JavaPlugin {
         plugin = null;
     }
 
-    public static String serverVersion() {
-        return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",")
-                .split(",")[3];
-    }
-
-    public static int majorVersion() {
-        return Integer.parseInt(serverVersion().replace("1_", "")
-                .replaceAll("_R\\d", "").replaceAll("v", ""));
-    }
-
     private void initializeConfigs() {
         ConfigManager.getInstance().initialize();
 
@@ -187,7 +177,7 @@ public class DeathMessages extends JavaPlugin {
     }
 
     private void checkGameRules() {
-        if (Settings.getInstance().getConfig().getBoolean("Disable-Default-Messages") && majorVersion() >= 13) {
+        if (Settings.getInstance().getConfig().getBoolean("Disable-Default-Messages")) {
             for (World w : Bukkit.getWorlds()) {
                 if (w.getGameRuleValue(GameRule.SHOW_DEATH_MESSAGES).equals(true)) {
                     w.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);

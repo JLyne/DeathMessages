@@ -111,14 +111,9 @@ public class Assets {
     }
 
     public static boolean isClimable(Block b) {
-        if (DeathMessages.majorVersion() >= 14) {
-            return b.getType().name().contains("LADDER")
-                    || b.getType().name().contains("VINE")
-                    || b.getType().equals(Material.SCAFFOLDING)
-                    || b.getType().name().contains("TRAPDOOR");
-        }
         return b.getType().name().contains("LADDER")
                 || b.getType().name().contains("VINE")
+                || b.getType().equals(Material.SCAFFOLDING)
                 || b.getType().name().contains("TRAPDOOR");
     }
 
@@ -166,26 +161,14 @@ public class Assets {
     }
 
     public static boolean hasWeapon(LivingEntity mob, EntityDamageEvent.DamageCause damageCause) {
-        if (DeathMessages.majorVersion() < 9) {
-            if (mob.getEquipment() == null || mob.getEquipment().getItemInHand() == null) {
-                return false;
-            } else if (isWeapon(mob.getEquipment().getItemInHand())) {
-                return false;
-            } else if (damageCause.equals(EntityDamageEvent.DamageCause.THORNS)) {
-                return false;
-            } else {
-                return true;
-            }
+        if (mob.getEquipment() == null || mob.getEquipment().getItemInMainHand() == null) {
+            return false;
+        } else if (isWeapon(mob.getEquipment().getItemInMainHand())) {
+            return false;
+        } else if (damageCause.equals(EntityDamageEvent.DamageCause.THORNS)) {
+            return false;
         } else {
-            if (mob.getEquipment() == null || mob.getEquipment().getItemInMainHand() == null) {
-                return false;
-            } else if (isWeapon(mob.getEquipment().getItemInMainHand())) {
-                return false;
-            } else if (damageCause.equals(EntityDamageEvent.DamageCause.THORNS)) {
-                return false;
-            } else {
-                return true;
-            }
+            return true;
         }
     }
 
@@ -213,7 +196,7 @@ public class Assets {
                 return get(gang, pm, pyro.getPlayer(), "Bed");
             }
             //Respawn Anchor kill
-            if (DeathMessages.majorVersion() >= 16 && explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)) {
+            if (explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)) {
                 PlayerManager pyro = PlayerManager.getPlayer(explosionManager.getPyro());
                 return get(gang, pm, pyro.getPlayer(), "Respawn-Anchor");
             }
@@ -264,7 +247,7 @@ public class Assets {
                 return getEntityDeath(pyro.getPlayer(), em.getEntity(), "Bed");
             }
             //Respawn Anchor kill
-            if (DeathMessages.majorVersion() >= 16 && explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)) {
+            if (explosionManager.getMaterial().equals(Material.RESPAWN_ANCHOR)) {
                 PlayerManager pyro = PlayerManager.getPlayer(explosionManager.getPyro());
                 return getEntityDeath(pyro.getPlayer(), em.getEntity(), "Respawn-Anchor");
             }
@@ -320,12 +303,7 @@ public class Assets {
             if (splitMessage.contains("%block%") && pm.getLastEntityDamager() instanceof FallingBlock) {
                 try {
                     FallingBlock fb = (FallingBlock) pm.getLastEntityDamager();
-                    String material;
-                    if (DeathMessages.majorVersion() < 13) {
-                        material = XMaterial.matchXMaterial(fb.getMaterial()).parseMaterial().toString().toLowerCase();
-                    } else {
-                        material = XMaterial.matchXMaterial(fb.getBlockData().getMaterial()).parseMaterial().toString().toLowerCase();
-                    }
+                    String material = XMaterial.matchXMaterial(fb.getBlockData().getMaterial()).parseMaterial().toString().toLowerCase();
                     String configValue = Messages.getInstance().getConfig().getString("Blocks." + material);
                     String mssa = Assets.colorize(splitMessage.replaceAll("%block%", configValue));
                     tc.addExtra(mssa);
@@ -340,12 +318,7 @@ public class Assets {
 
             } else if (splitMessage.contains("%climbable%") && pm.getLastDamage().equals(EntityDamageEvent.DamageCause.FALL)) {
                 try {
-                    String material;
-                    if (DeathMessages.majorVersion() < 13) {
-                        material = XMaterial.matchXMaterial(pm.getLastClimbing()).parseMaterial().toString().toLowerCase();
-                    } else {
-                        material = XMaterial.matchXMaterial(pm.getLastClimbing()).parseMaterial().toString().toLowerCase();
-                    }
+                    String material = XMaterial.matchXMaterial(pm.getLastClimbing()).parseMaterial().toString().toLowerCase();
                     String configValue = Messages.getInstance().getConfig().getString("Blocks." + material);
                     String mssa = Assets.colorize(splitMessage.replaceAll("%climbable%", configValue));
                     tc.addExtra(mssa);
@@ -358,19 +331,9 @@ public class Assets {
                     return getNaturalDeath(pm, getSimpleCause(EntityDamageEvent.DamageCause.FALL));
                 }
             } else if (pm.getLastDamage().equals(EntityDamageEvent.DamageCause.PROJECTILE) && splitMessage.contains("%weapon%")) {
-                ItemStack i;
-                if (DeathMessages.majorVersion() <= 9) {
-                    i = pm.getPlayer().getEquipment().getItemInHand();
-                } else {
-                    i = pm.getPlayer().getEquipment().getItemInMainHand();
-                }
+                ItemStack i = pm.getPlayer().getEquipment().getItemInMainHand();
                 if (!i.getType().equals(Material.BOW)) {
                     return getNaturalDeath(pm, "Projectile-Unknown");
-                }
-                if (DeathMessages.majorVersion() < 14) {
-                    if (!i.getType().equals(Material.CROSSBOW)) {
-                        return getNaturalDeath(pm, "Projectile-Unknown");
-                    }
                 }
                 String displayName;
                 if (!(i.getItemMeta() == null) && !i.getItemMeta().hasDisplayName() || i.getItemMeta().getDisplayName().equals("")) {
@@ -463,12 +426,7 @@ public class Assets {
         String lastFont = "";
         for (String splitMessage : firstSection.split(" ")) {
             if (splitMessage.contains("%weapon%")) {
-                ItemStack i;
-                if (DeathMessages.majorVersion() <= 9) {
-                    i = mob.getEquipment().getItemInHand();
-                } else {
-                    i = mob.getEquipment().getItemInMainHand();
-                }
+                ItemStack i = mob.getEquipment().getItemInMainHand();
                 String displayName;
                 if (!(i.getItemMeta() == null) && !i.getItemMeta().hasDisplayName() || i.getItemMeta().getDisplayName().equals("")) {
                     if (Settings.getInstance().getConfig().getBoolean("Disable-Weapon-Kill-With-No-Custom-Name.Allow-Message-Color-Override")) {
@@ -561,12 +519,7 @@ public class Assets {
         String lastFont = "";
         for (String splitMessage : firstSection.split(" ")) {
             if (splitMessage.contains("%weapon%")) {
-                ItemStack i;
-                if (DeathMessages.majorVersion() <= 9) {
-                    i = p.getEquipment().getItemInHand();
-                } else {
-                    i = p.getEquipment().getItemInMainHand();
-                }
+                ItemStack i = p.getEquipment().getItemInMainHand();
                 String displayName;
                 if (!(i.getItemMeta() == null) && !i.getItemMeta().hasDisplayName() || i.getItemMeta().getDisplayName().equals("")) {
                     if (Settings.getInstance().getConfig().getBoolean("Disable-Weapon-Kill-With-No-Custom-Name.Allow-Message-Color-Override")) {
@@ -725,12 +678,7 @@ public class Assets {
         String lastFont = "";
         for (String splitMessage : firstSection.split(" ")) {
             if (splitMessage.contains("%weapon%") && pm.getLastProjectileEntity() instanceof Arrow) {
-                ItemStack i;
-                if (DeathMessages.majorVersion() < 9) {
-                    i = mob.getEquipment().getItemInHand();
-                } else {
-                    i = mob.getEquipment().getItemInMainHand();
-                }
+                ItemStack i = mob.getEquipment().getItemInMainHand();
                 if (i == null) {
                     continue;
                 }
@@ -822,12 +770,7 @@ public class Assets {
         String lastFont = "";
         for (String splitMessage : firstSection.split(" ")) {
             if (splitMessage.contains("%weapon%") && em.getLastProjectileEntity() instanceof Arrow) {
-                ItemStack i;
-                if (DeathMessages.majorVersion() < 9) {
-                    i = p.getEquipment().getItemInHand();
-                } else {
-                    i = p.getEquipment().getItemInMainHand();
-                }
+                ItemStack i = p.getEquipment().getItemInMainHand();
                 if (i == null) {
                     continue;
                 }
@@ -991,20 +934,16 @@ public class Assets {
     }
 
     public static String colorize(String message) {
-        if (DeathMessages.majorVersion() >= 16) {
-            Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-            Matcher matcher = pattern.matcher(message);
+        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(message);
 
-            while (matcher.find()) {
-                String color = message.substring(matcher.start(), matcher.end());
-                message = message.replace(color, ChatColor.of(color) + "");
-                matcher = pattern.matcher(message);
-            }
-            message = message.replace('&', ChatColor.COLOR_CHAR);
-            return message;
-        } else {
-            return ChatColor.translateAlternateColorCodes('&', message);
+        while (matcher.find()) {
+            String color = message.substring(matcher.start(), matcher.end());
+            message = message.replace(color, ChatColor.of(color) + "");
+            matcher = pattern.matcher(message);
         }
+        message = message.replace('&', ChatColor.COLOR_CHAR);
+        return message;
     }
 
     public static String entityDeathPlaceholders(String msg, Player player, Entity entity, boolean owner) {
