@@ -567,7 +567,6 @@ public class Assets {
 
         // List<String> msgs = sortList(getPlayerDeathMessages().getStringList(cMode + "." + affiliation + "." + damageCause), pm.getPlayer());
 
-        Bukkit.broadcastMessage("get");
         List<String> msgs = sortList(getPlayerDeathMessages().getStringList(cMode + "." + affiliation + "." + damageCause), pm.getPlayer(), mob);
 
         if (msgs.isEmpty()) {
